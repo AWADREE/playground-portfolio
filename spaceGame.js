@@ -139,6 +139,8 @@ export class SpaceGame {
 
     this.createStars();
 
+    this.optimizeForDevice();
+
     this.animate();
   }
 
@@ -208,14 +210,22 @@ export class SpaceGame {
   }
 
   createExplosionParticles() {
-    const particles = new THREE.Points(
-      new THREE.BufferGeometry(),
-      new THREE.PointsMaterial({
-        size: 0.2,
-        color: 0xff4400,
-        transparent: true,
-      })
-    );
+    const particleCount = Math.min(50, window.innerWidth > 768 ? 50 : 20);
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
+    const material = new THREE.PointsMaterial({
+      size: 0.2,
+      color: 0xff4400,
+      transparent: true,
+      vertexColors: true,
+    });
+
+    const particles = new THREE.Points(geometry, material);
     this.scene.add(particles);
     return particles;
   }
@@ -313,9 +323,10 @@ export class SpaceGame {
   }
 
   createStars() {
+    const starCount = window.innerWidth > 768 ? 2000 : 1000;
     const starGeometry = new THREE.BufferGeometry();
     const starVertices = [];
-    for (let i = 0; i < 5000; i++) {
+    for (let i = 0; i < starCount; i++) {
       starVertices.push(
         THREE.MathUtils.randFloatSpread(100),
         THREE.MathUtils.randFloatSpread(100),
@@ -795,7 +806,9 @@ export class SpaceGame {
         this.shoot();
       }
 
-      if (Math.random() < 0.03) this.createAsteroid();
+      if (this.asteroids.length < this.maxAsteroids && Math.random() < 0.03) {
+        this.createAsteroid();
+      }
 
       if (Math.random() < this.powerUpChance) this.createPowerUp();
 
@@ -871,7 +884,11 @@ export class SpaceGame {
       this.stars.rotation.y += 0.0001;
     }
 
-    this.composer.render();
+    if (window.innerWidth <= 768) {
+      this.renderer.render(this.scene, this.camera);
+    } else {
+      this.composer.render();
+    }
   }
 
   handleResize() {
@@ -934,6 +951,20 @@ export class SpaceGame {
     if (this.shieldMesh) {
       this.ship.remove(this.shieldMesh);
       this.shieldMesh = null;
+    }
+  }
+
+  optimizeForDevice() {
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      this.renderer.setPixelRatio(1);
+      this.shotCooldown = 300;
+      this.maxAsteroids = 10;
+      this.powerUpChance = 0.01;
+    } else {
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      this.maxAsteroids = 20;
+      this.powerUpChance = 0.02;
     }
   }
 }

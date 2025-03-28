@@ -237,6 +237,8 @@ function setupMobileFloatAnimation() {
 window.addEventListener("load", setupMobileFloatAnimation);
 window.addEventListener("resize", setupMobileFloatAnimation);
 
+const particleCount = window.innerWidth > 768 ? 20 : 10;
+
 const particleMaterial = new THREE.ShaderMaterial({
   uniforms: {
     color: { value: new THREE.Color(0xffffff) },
@@ -264,7 +266,6 @@ const particleMaterial = new THREE.ShaderMaterial({
 });
 
 const particleGeometry = new THREE.BufferGeometry();
-const particleCount = 70000;
 const positions = new Float32Array(particleCount * 3);
 const alphas = new Float32Array(particleCount);
 particleGeometry.setAttribute(
@@ -276,7 +277,7 @@ particleGeometry.setAttribute("alpha", new THREE.BufferAttribute(alphas, 1));
 const particles = new THREE.Points(particleGeometry, particleMaterial);
 scene.add(particles);
 
-const emissionCount = 120;
+const emissionCount = 1;
 
 function animateParticles() {
   for (let i = particleCount - 1; i >= emissionCount; i--) {
@@ -318,7 +319,7 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
 scene.add(pointLight, ambientLight);
 
 function addStar(spreadDistance) {
-  const geometry = new THREE.SphereGeometry(0.25, 24, 24);
+  const geometry = new THREE.SphereGeometry(0.25, 12, 12);
   const material = new THREE.MeshStandardMaterial({
     color: 0xffffff,
     emissive: 0xffffff,
@@ -332,10 +333,12 @@ function addStar(spreadDistance) {
   star.position.set(x, y, z);
   scene.add(star);
 }
-Array(2000)
+
+const starCount = window.innerWidth > 768 ? 2000 : 250;
+Array(starCount)
   .fill()
   .forEach(() => addStar(1000));
-Array(200)
+Array(Math.floor(starCount / 10))
   .fill()
   .forEach(() => addStar(200));
 
@@ -422,15 +425,27 @@ function moveCamera() {
   moveOrb(t);
 }
 
-window.addEventListener("resize", () => {
+// Change from throttled to direct camera movement
+document.body.onscroll = moveCamera;
+
+// Optimize resize handler
+const throttledResize = () => {
   const aspect = window.innerWidth / window.innerHeight;
   camera.aspect = aspect;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  composer.setSize(window.innerWidth, window.innerHeight);
-});
 
-document.body.onscroll = moveCamera;
+  renderer.setPixelRatio(
+    window.innerWidth <= 768 ? 1 : Math.min(window.devicePixelRatio, 2)
+  );
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  if (window.innerWidth > 768) {
+    composer.setSize(window.innerWidth, window.innerHeight);
+    composer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  }
+};
+
+window.addEventListener("resize", throttledResize);
 
 function updateScrollIndicator() {
   const scrollTop = document.documentElement.scrollTop;
@@ -546,8 +561,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
+// Optimize animation loop
 function animate() {
   requestAnimationFrame(animate);
+
+  // Reduce animation frequency on mobile
+  if (window.innerWidth <= 768) {
+    if (Date.now() % 2 === 0) return; // Skip every other frame on mobile
+  }
+
   torus.rotation.z += 0.01;
 
   moonMesh.rotation.x += 0.005;
@@ -565,8 +587,13 @@ function animate() {
   }
   animateOrbPulse();
   animateParticles();
-  renderer.render(scene, camera);
-  composer.render();
+
+  // Use regular renderer on mobile
+  if (window.innerWidth <= 768) {
+    renderer.render(scene, camera);
+  } else {
+    composer.render();
+  }
 }
 
 animate();
