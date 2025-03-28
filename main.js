@@ -237,7 +237,7 @@ function setupMobileFloatAnimation() {
 window.addEventListener("load", setupMobileFloatAnimation);
 window.addEventListener("resize", setupMobileFloatAnimation);
 
-const particleCount = window.innerWidth > 768 ? 20 : 10;
+const particleCount = window.innerWidth > 768 ? 10 : 5;
 
 const particleMaterial = new THREE.ShaderMaterial({
   uniforms: {
@@ -425,10 +425,8 @@ function moveCamera() {
   moveOrb(t);
 }
 
-// Change from throttled to direct camera movement
 document.body.onscroll = moveCamera;
 
-// Optimize resize handler
 const throttledResize = () => {
   const aspect = window.innerWidth / window.innerHeight;
   camera.aspect = aspect;
@@ -561,13 +559,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
-// Optimize animation loop
 function animate() {
   requestAnimationFrame(animate);
 
-  // Reduce animation frequency on mobile
   if (window.innerWidth <= 768) {
-    if (Date.now() % 2 === 0) return; // Skip every other frame on mobile
+    if (Date.now() % 2 === 0) return;
   }
 
   torus.rotation.z += 0.01;
@@ -588,12 +584,7 @@ function animate() {
   animateOrbPulse();
   animateParticles();
 
-  // Use regular renderer on mobile
-  if (window.innerWidth <= 768) {
-    renderer.render(scene, camera);
-  } else {
-    composer.render();
-  }
+  composer.render();
 }
 
 animate();

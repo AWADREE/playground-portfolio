@@ -289,12 +289,13 @@ export class SpaceGame {
 
   setupTrailEffect() {
     const trailGeometry = new THREE.BufferGeometry();
-    const trailPositions = new Float32Array(100 * 3);
-    const trailColors = new Float32Array(100 * 3);
+    const particleCount = window.innerWidth > 768 ? 30 : 15;
+    const trailPositions = new Float32Array(particleCount * 3);
+    const trailColors = new Float32Array(particleCount * 3);
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
-      const gradientFactor = i / 100;
+      const gradientFactor = i / particleCount;
 
       trailColors[i3] = 0.5 + 0.5 * gradientFactor;
       trailColors[i3 + 1] = 1;
@@ -311,7 +312,7 @@ export class SpaceGame {
     );
 
     const trailMaterial = new THREE.PointsMaterial({
-      size: 0.15,
+      size: window.innerWidth > 768 ? 0.15 : 0.1,
       vertexColors: true,
       transparent: true,
       opacity: 0.8,
@@ -347,7 +348,7 @@ export class SpaceGame {
 
   setupAsteroidTrail(asteroid) {
     const trailGeometry = new THREE.BufferGeometry();
-    const particleCount = 50;
+    const particleCount = Math.min(20, window.innerWidth > 768 ? 20 : 10);
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
 
@@ -505,7 +506,7 @@ export class SpaceGame {
   }
 
   createExplosion(position, size) {
-    const particleCount = Math.floor(size * 100);
+    const particleCount = Math.floor(size * 20);
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
@@ -884,11 +885,7 @@ export class SpaceGame {
       this.stars.rotation.y += 0.0001;
     }
 
-    if (window.innerWidth <= 768) {
-      this.renderer.render(this.scene, this.camera);
-    } else {
-      this.composer.render();
-    }
+    this.composer.render();
   }
 
   handleResize() {
