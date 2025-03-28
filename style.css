@@ -11,7 +11,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --dark-bg: rgba(15, 15, 15, 0.85); /* Changed from 0.95 to 0.85 */
-  --spacing: 350px;
+  --spacing: 300px; /* Change from 350px to 200px to reduce overall spacing */
   --primary-color: #ffffff;
   --secondary-color: #1e1e1e;
   --text-color: rgba(255, 255, 255, 0.87);
@@ -31,6 +31,13 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Lato:wght@400;700&display=swap");
 @import url("https://use.typekit.net/jmk3xov.css");
+
+html,
+body {
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+}
 
 body {
   margin: 0;
@@ -60,18 +67,17 @@ canvas {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: -1;
+  z-index: 1; /* Change from -1 to 1 */
 }
 
 main {
-  width: 100vw;
+  width: 100%; /* Change from 100vw to 100% */
   color: white;
-  z-index: 99;
-  position: absolute;
-  width: 100%;
-  margin: auto;
-  padding: 80px 20px;
-  max-width: 1200px;
+  z-index: 2; /* Change from 99 to 2 */
+  position: relative; /* Change from absolute to relative */
+  margin: 0; /* Remove auto margin */
+  padding: 40px 10px; /* Reduce padding */
+  max-width: 100%; /* Ensure it doesn't overflow */
   display: grid;
   grid-template-columns: repeat(12, 1fr);
 }
@@ -102,13 +108,14 @@ header {
   grid-column: 2 / span 5;
   font-size: 2.5rem;
   padding: 2rem;
-  margin-bottom: var(--spacing);
+  margin-bottom: 100px; /* Change from var(--spacing) to 100px */
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   transition: background-color var(--transition-speed);
   text-align: center;
   position: relative;
   isolation: isolate;
+  overflow: hidden; /* Add this line */
 }
 
 header:hover {
@@ -128,6 +135,7 @@ header::before {
   transition: opacity 0.15s;
   z-index: -1;
   pointer-events: none;
+  border-radius: var(--border-radius); /* Add this line */
 }
 
 header:hover::before {
@@ -178,6 +186,7 @@ section {
   animation: fadeIn 1s ease-in-out forwards;
   position: relative;
   isolation: isolate;
+  overflow: hidden; /* Add this line */
 }
 
 section::before {
@@ -193,6 +202,7 @@ section::before {
   transition: opacity 0.15s;
   z-index: -1;
   pointer-events: none;
+  border-radius: var(--border-radius); /* Add this line */
 }
 
 section:hover::before {
@@ -270,6 +280,7 @@ blockquote {
   transition: background-color var(--transition-speed);
   position: relative;
   isolation: isolate;
+  overflow: hidden; /* Add this line */
 }
 
 blockquote:hover {
@@ -289,6 +300,7 @@ blockquote::before {
   transition: opacity 0.15s;
   z-index: -1;
   pointer-events: none;
+  border-radius: var(--border-radius); /* Add this line */
 }
 
 blockquote:hover::before {
@@ -365,6 +377,7 @@ copyable:hover {
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  z-index: 3; /* Add this line */
 }
 
 #copy-message.visible {
@@ -428,7 +441,7 @@ copyable:hover {
   height: 4px;
   background: var(--link-hover-color);
   width: 0%;
-  z-index: 100;
+  z-index: 3; /* Change from 100 to 3 */
   transition: width 0.2s ease-out;
 }
 
@@ -445,124 +458,108 @@ copyable:hover {
 
 @media screen and (max-width: 768px) {
   main {
-    padding: 40px 10px;
+    padding: 20px 10px;
+    width: calc(100% - 20px); /* Account for padding */
   }
 
   header {
     grid-column: 1 / -1;
-    font-size: 2rem;
     padding: 1.5rem;
-    margin: 0 1rem var(--spacing) 1rem;
-  }
-
-  header h3 {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    margin: 0 0.5rem 80px 0.5rem; /* Slightly smaller for mobile */
+    width: calc(100% - 1rem); /* Account for margins */
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    box-sizing: border-box;
   }
 
   section {
     grid-column: 1 / -1;
-    margin: 0 1rem var(--spacing) 1rem;
     padding: 1.5rem;
-    font-size: 1rem;
-    background-color: rgba(15, 15, 15, 0.75); /* Set permanent higher opacity */
-    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform, opacity;
-  }
-
-  section.float-away {
-    animation: floatAway 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    pointer-events: none;
-  }
-
-  blockquote {
-    grid-column: 1 / -1;
-    margin: 0 1rem var(--spacing) 1rem;
-    padding: 1.5rem;
-    background-color: rgba(15, 15, 15, 0.75); /* Set permanent higher opacity */
-    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform, opacity;
-  }
-
-  blockquote.float-away {
-    animation: floatAway 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    pointer-events: none;
+    margin: 0 0.5rem var(--spacing) 0.5rem;
+    width: calc(100% - 1rem); /* Account for margins */
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    box-sizing: border-box;
+    background: rgba(15, 15, 15, 0.75); /* Set permanent higher opacity */
+    transition: none; /* Remove transition effect */
   }
 
   section:hover {
-    background-color: rgba(15, 15, 15, 0.75); /* Keep same as non-hover state */
-  }
-
-  blockquote:hover {
-    background-color: rgba(15, 15, 15, 0.75); /* Keep same as non-hover state */
-  }
-
-  section h2 {
-    font-size: 1.5rem;
-  }
-
-  blockquote {
-    grid-column: 1 / -1;
-    margin: 0 1rem var(--spacing) 1rem;
-    padding: 1.5rem;
-  }
-
-  blockquote p {
-    font-size: 1.2rem;
-    padding: 0.5rem;
-  }
-
-  .skills-list {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 0.5rem;
-  }
-
-  .skills-list li {
-    padding: 0.4rem 0.5rem;
-    font-size: 0.9rem;
-  }
-
-  .left {
-    grid-column: 1 / -1;
-    text-align: left;
+    background: rgba(15, 15, 15, 0.75); /* Keep same background on hover */
+    transform: none;
   }
 
   section p:hover {
     transform: none;
     box-shadow: none;
+    background-color: transparent;
+  }
+
+  blockquote {
+    grid-column: 1 / -1;
+    margin: 0 0.5rem var(--spacing) 0.5rem;
+    padding: 1.5rem;
+    width: calc(100% - 1rem); /* Account for margins */
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    box-sizing: border-box;
+    background: rgba(15, 15, 15, 0.75); /* Set permanent higher opacity */
+    transition: none; /* Remove transition effect */
+  }
+
+  blockquote:hover {
+    background: rgba(15, 15, 15, 0.75); /* Keep same background on hover */
+    transform: none;
+  }
+
+  .skills-list {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.5rem;
   }
 
   .skills-list li:hover {
     transform: none;
     box-shadow: none;
+    background-color: rgba(255, 255, 255, 0.05);
   }
 
-  #copy-message {
-    padding: 8px 16px;
-    font-size: 0.9rem;
+  p,
+  li {
+    font-size: 0.95rem;
+  }
+
+  header h3 {
+    font-size: 1.6rem;
+  }
+
+  section h2 {
+    font-size: 1.4rem;
   }
 }
 
 @media screen and (max-width: 480px) {
   :root {
-    --spacing: 200px;
+    --spacing: 100px; /* Even smaller spacing for very small screens */
   }
 
   main {
-    padding: 20px 5px;
+    padding: 15px 5px;
   }
 
   header {
     padding: 1rem;
+    margin: 0 0.3rem 60px 0.3rem; /* Even smaller for very small screens */
+  }
+
+  section,
+  blockquote {
+    padding: 1rem;
+    margin: 0 0.3rem var(--spacing) 0.3rem;
   }
 
   header h3 {
-    font-size: 1.2rem;
-  }
-
-  section {
-    padding: 1rem;
+    font-size: 1.4rem;
   }
 
   section h2 {
@@ -571,14 +568,36 @@ copyable:hover {
 
   blockquote p {
     font-size: 1rem;
+    padding: 0.5rem;
   }
 
   p,
   li {
     font-size: 0.9rem;
+    line-height: 1.5;
   }
 
   .skills-list {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 0.4rem;
+  }
+
+  .skills-list li {
+    padding: 0.4rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  :root {
+    --spacing: 150px;
+  }
+
+  header h3 {
+    font-size: 1.2rem;
+  }
+
+  .skills-list {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   }
 }

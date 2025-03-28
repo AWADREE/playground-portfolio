@@ -473,6 +473,8 @@ const moveOrb = (t) => {
 
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
+  const isMobile = window.innerWidth <= 768;
+
   moonMesh.rotation.x += 0.05;
   moonMesh.rotation.y += 0.05;
   moonMesh.rotation.z += 0.05;
@@ -481,16 +483,32 @@ function moveCamera() {
 
   torus.position.setZ(t * 0.01 * -1);
   pointLight.position.setZ(t * 0.01 * -1);
-  // orbMesh.position.setZ((t * 0.01) * -1);
 
-  camera.position.x = t * 0.0002 * 2;
-  camera.position.y = t * 0.0002 * 2;
-  camera.position.z = t * 0.01 * 2;
+  // Adjust camera movement for mobile
+  if (isMobile) {
+    camera.position.x = t * 0.0001;
+    camera.position.y = t * 0.0001;
+    camera.position.z = Math.max(t * 0.01, -200); // Limit how far back the camera can go
+  } else {
+    camera.position.x = t * 0.0002 * 2;
+    camera.position.y = t * 0.0002 * 2;
+    camera.position.z = t * 0.01 * 2;
+  }
+
   camera.rotation.y = t * 0.0001;
 
   moveOrb(t);
-  // console.log("t",t)
 }
+
+// Add resize handler to update camera on orientation change
+window.addEventListener("resize", () => {
+  const aspect = window.innerWidth / window.innerHeight;
+  camera.aspect = aspect;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  composer.setSize(window.innerWidth, window.innerHeight);
+});
+
 document.body.onscroll = moveCamera;
 
 // Update scroll indicator on scroll
