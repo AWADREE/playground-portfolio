@@ -562,19 +562,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 function animate() {
   requestAnimationFrame(animate);
 
-  if (window.innerWidth <= 768) {
-    if (Date.now() % 2 === 0) return;
-  }
-
   torus.rotation.z += 0.01;
-
   moonMesh.rotation.x += 0.005;
   moonMesh.rotation.y += 0.005;
   moonMesh.rotation.z += 0.005;
-
   moon2Mesh.rotation.x += 0.01;
   moon2Mesh.rotation.z += 0.01;
-
   moon3Mesh.rotation.x += 0.005;
   moon3Mesh.rotation.z += 0.005;
 

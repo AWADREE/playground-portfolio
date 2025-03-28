@@ -619,9 +619,9 @@ blockquote:last-of-type {
   display: grid;
   place-items: center;
   gap: 1rem;
-  grid-column: 3 / span 8;
+  grid-column: 2 / span 10; /* Changed from 3 / span 8 to make it wider */
   margin: 0 auto calc(var(--spacing) / 2);
-  max-width: 800px;
+  /* max-width: 1200px; Increased from 800px */
   min-height: 200px;
   box-sizing: border-box;
 }
