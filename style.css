@@ -192,7 +192,7 @@ header .location {
   object-position: center;
 }
 
-.profile-image::before {
+profile-image::before {
   content: "";
   position: absolute;
   inset: -30px;
@@ -276,7 +276,7 @@ header h3 {
   color: var(--highlight-color);
   height: auto;
   min-height: 2.5rem;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   display: inline-block;
 }
 
@@ -616,12 +616,14 @@ blockquote:last-of-type {
   padding: 2.5rem;
   position: relative;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  place-items: center;
+  gap: 1rem;
   grid-column: 3 / span 8;
   margin: 0 auto calc(var(--spacing) / 2);
   max-width: 800px;
+  min-height: 200px;
+  box-sizing: border-box;
 }
 
 blockquote:last-of-type h1 {
