@@ -496,16 +496,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   const audioIcon = audioControl.querySelector("i");
 
   music.volume = 0.2;
-  music.muted = false;
+  music.muted = true;
   music.loop = true;
   let isPlaying = false;
+
+  audioIcon.className = "fas fa-volume-mute";
+  audioControl.classList.add("muted");
 
   const attemptPlay = async () => {
     try {
       await music.play();
       isPlaying = true;
-      audioIcon.className = "fas fa-volume-up";
-      audioControl.classList.remove("muted");
     } catch (err) {
       console.log("Playback attempt failed:", err);
     }
