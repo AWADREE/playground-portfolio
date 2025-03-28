@@ -10,8 +10,8 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --dark-bg: rgba(15, 15, 15, 0.85); /* Changed from 0.95 to 0.85 */
-  --spacing: 300px; /* Change from 350px to 200px to reduce overall spacing */
+  --dark-bg: rgba(15, 15, 15, 0.85);
+  --spacing: 300px;
   --primary-color: #ffffff;
   --secondary-color: #1e1e1e;
   --text-color: rgba(255, 255, 255, 0.87);
@@ -67,17 +67,17 @@ canvas {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1; /* Change from -1 to 1 */
+  z-index: 1;
 }
 
 main {
-  width: 100%; /* Change from 100vw to 100% */
+  width: 100%;
   color: white;
-  z-index: 2; /* Change from 99 to 2 */
-  position: relative; /* Change from absolute to relative */
-  margin: 0; /* Remove auto margin */
-  padding: 40px 10px; /* Reduce padding */
-  max-width: 100%; /* Ensure it doesn't overflow */
+  z-index: 2;
+  position: relative;
+  margin: 0;
+  padding: 40px 10px 0;
+  max-width: 100%;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
 }
@@ -108,14 +108,14 @@ header {
   grid-column: 2 / span 5;
   font-size: 2.5rem;
   padding: 2rem;
-  margin-bottom: 100px; /* Change from var(--spacing) to 100px */
+  margin-bottom: 100px;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   transition: background-color var(--transition-speed);
   text-align: center;
   position: relative;
   isolation: isolate;
-  overflow: hidden; /* Add this line */
+  overflow: hidden;
 }
 
 header:hover {
@@ -135,7 +135,7 @@ header::before {
   transition: opacity 0.15s;
   z-index: -1;
   pointer-events: none;
-  border-radius: var(--border-radius); /* Add this line */
+  border-radius: var(--border-radius);
 }
 
 header:hover::before {
@@ -186,7 +186,11 @@ section {
   animation: fadeIn 1s ease-in-out forwards;
   position: relative;
   isolation: isolate;
-  overflow: hidden; /* Add this line */
+  overflow: hidden;
+}
+
+section.compact-section {
+  margin-bottom: 50px;
 }
 
 section::before {
@@ -202,7 +206,7 @@ section::before {
   transition: opacity 0.15s;
   z-index: -1;
   pointer-events: none;
-  border-radius: var(--border-radius); /* Add this line */
+  border-radius: var(--border-radius);
 }
 
 section:hover::before {
@@ -233,12 +237,16 @@ section:hover::before {
 }
 
 section:hover {
-  background-color: rgba(
-    15,
-    15,
-    15,
-    0.75
-  ); /* Changed from var(--dark-bg) to a custom lower opacity */
+  background-color: rgba(15, 15, 15, 0.75);
+  transform: none;
+}
+
+section:last-of-type {
+  background: rgba(15, 15, 15, 0.3);
+}
+
+section:last-of-type:hover {
+  background: rgba(15, 15, 15, 0.3);
   transform: none;
 }
 
@@ -280,7 +288,7 @@ blockquote {
   transition: background-color var(--transition-speed);
   position: relative;
   isolation: isolate;
-  overflow: hidden; /* Add this line */
+  overflow: hidden;
 }
 
 blockquote:hover {
@@ -300,7 +308,7 @@ blockquote::before {
   transition: opacity 0.15s;
   z-index: -1;
   pointer-events: none;
-  border-radius: var(--border-radius); /* Add this line */
+  border-radius: var(--border-radius);
 }
 
 blockquote:hover::before {
@@ -365,24 +373,46 @@ copyable:hover {
 
 #copy-message {
   position: fixed;
-  bottom: 20px;
+  bottom: 30px;
   left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--dark-bg);
-  color: var(--text-color);
-  padding: 10px 20px;
+  transform: translate(-50%, 100px);
+  background: rgba(15, 15, 15, 0.95);
+  color: var(--highlight-color);
+  padding: 12px 24px;
   border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   font-size: 1rem;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-  z-index: 3; /* Add this line */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  border: 1px solid var(--link-hover-color);
+  text-align: center;
+  pointer-events: none;
 }
 
 #copy-message.visible {
   opacity: 1;
   visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.copyable {
+  cursor: pointer !important;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  transition: all 0.2s ease;
+}
+
+.copyable:hover {
+  color: var(--link-hover-color) !important;
+  transform: translateY(-2px);
+}
+
+copyable:active {
+  transform: translateY(0) scale(0.95);
 }
 
 .skills-list {
@@ -441,7 +471,7 @@ copyable:hover {
   height: 4px;
   background: var(--link-hover-color);
   width: 0%;
-  z-index: 3; /* Change from 100 to 3 */
+  z-index: 3;
   transition: width 0.2s ease-out;
 }
 
@@ -456,18 +486,63 @@ copyable:hover {
   }
 }
 
+.game-container {
+  grid-column: 2 / -2 !important;
+  text-align: center;
+  padding: 2rem;
+  padding-top: 1rem;
+  margin-bottom: 2rem !important;
+  padding-bottom: 0;
+}
+
+.game-instructions {
+  color: var(--text-color);
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+#game-canvas-container {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 30px rgba(255, 153, 51, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#game-canvas-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#game-ui {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  color: var(--highlight-color);
+  font-family: "Quicksand", sans-serif;
+  font-size: 1.2rem;
+}
+
 @media screen and (max-width: 768px) {
   main {
     padding: 20px 10px;
-    width: calc(100% - 20px); /* Account for padding */
+    width: calc(100% - 20px);
   }
 
   header {
     grid-column: 1 / -1;
     padding: 1.5rem;
     font-size: 1.8rem;
-    margin: 0 0.5rem 80px 0.5rem; /* Slightly smaller for mobile */
-    width: calc(100% - 1rem); /* Account for margins */
+    margin: 0 0.5rem 80px 0.5rem;
+    width: calc(100% - 1rem);
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     box-sizing: border-box;
@@ -477,16 +552,16 @@ copyable:hover {
     grid-column: 1 / -1;
     padding: 1.5rem;
     margin: 0 0.5rem var(--spacing) 0.5rem;
-    width: calc(100% - 1rem); /* Account for margins */
+    width: calc(100% - 1rem);
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     box-sizing: border-box;
-    background: rgba(15, 15, 15, 0.75); /* Set permanent higher opacity */
-    transition: none; /* Remove transition effect */
+    background: rgba(15, 15, 15, 0.75);
+    transition: none;
   }
 
   section:hover {
-    background: rgba(15, 15, 15, 0.75); /* Keep same background on hover */
+    background: rgba(15, 15, 15, 0.75);
     transform: none;
   }
 
@@ -500,16 +575,16 @@ copyable:hover {
     grid-column: 1 / -1;
     margin: 0 0.5rem var(--spacing) 0.5rem;
     padding: 1.5rem;
-    width: calc(100% - 1rem); /* Account for margins */
+    width: calc(100% - 1rem);
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     box-sizing: border-box;
-    background: rgba(15, 15, 15, 0.75); /* Set permanent higher opacity */
-    transition: none; /* Remove transition effect */
+    background: rgba(15, 15, 15, 0.75);
+    transition: none;
   }
 
   blockquote:hover {
-    background: rgba(15, 15, 15, 0.75); /* Keep same background on hover */
+    background: rgba(15, 15, 15, 0.75);
     transform: none;
   }
 
@@ -536,11 +611,19 @@ copyable:hover {
   section h2 {
     font-size: 1.4rem;
   }
+
+  .game-container {
+    grid-column: 1 / -1 !important;
+  }
+
+  #game-canvas-container {
+    height: 300px;
+  }
 }
 
 @media screen and (max-width: 480px) {
   :root {
-    --spacing: 100px; /* Even smaller spacing for very small screens */
+    --spacing: 100px;
   }
 
   main {
@@ -549,7 +632,7 @@ copyable:hover {
 
   header {
     padding: 1rem;
-    margin: 0 0.3rem 60px 0.3rem; /* Even smaller for very small screens */
+    margin: 0 0.3rem 60px 0.3rem;
   }
 
   section,
@@ -599,5 +682,62 @@ copyable:hover {
 
   .skills-list {
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+}
+
+#audio-control {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: rgba(15, 15, 15, 0.85);
+  color: var(--highlight-color);
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 153, 51, 0.2);
+  overflow: hidden;
+}
+
+#audio-control:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 153, 51, 0.3);
+}
+
+#audio-control.clicked {
+  animation: pulse 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#audio-control.muted {
+  background: rgba(15, 15, 15, 0.95);
+  color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#audio-control i {
+  font-size: 1.4rem;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#audio-control:hover i {
+  transform: scale(1.2);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
   }
 }

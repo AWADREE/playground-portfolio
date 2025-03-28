@@ -2,10 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>THREEjs Playground</title>
+    <title>AWADREE</title>
     <link rel="preload" href="glow.png" as="image" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
   </head>
   <body>
     <div id="scroll-indicator"></div>
@@ -18,7 +22,7 @@
           <a
             href="javascript:void(0);"
             class="copyable"
-            onclick="copyToClipboard('+201206799666')"
+            data-copy="+201206799666"
           >
             +20 1206799666
           </a>
@@ -31,7 +35,9 @@
             elawadree@gmail.com
           </a>
           <span class="separator">•</span>
-          <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+          <a href="https://www.linkedin.com/in/awadree" target="_blank"
+            >LinkedIn</a
+          >
         </p>
       </header>
 
@@ -116,16 +122,22 @@
           <li>Firebase</li>
           <li>Responsive UI</li>
           <li>Push notifications</li>
-          <li>Deployment processes for App Store and Google Play</li>
+          <li>App Store Deployment processes</li>
+          <li>Google Play Deployment processes</li>
         </ul>
       </section>
       <section class="flight">
         <h2>Personal Skills</h2>
-        <p>
-          Creative, eager to learn, works well under pressure, adaptable to
-          environment and work culture, team player, problem solver, optimistic,
-          and self-motivated.
-        </p>
+        <ul class="skills-list">
+          <li>Creative</li>
+          <li>Eager to learn</li>
+          <li>Works well under pressure</li>
+          <li>Adaptable</li>
+          <li>Team player</li>
+          <li>Problem solver</li>
+          <li>Optimistic</li>
+          <li>Self-motivated</li>
+        </ul>
       </section>
 
       <section>
@@ -209,20 +221,7 @@
         </p>
       </section>
 
-      <section>
-        <h2>References</h2>
-        <p>
-          <a href="https://github.com/AWADREE" target="_blank"
-            >https://github.com/AWADREE</a
-          ><br />
-          <a href="https://awadree.itch.io/" target="_blank"
-            >https://awadree.itch.io/</a
-          ><br />
-          More references available on request.
-        </p>
-      </section>
-
-      <section>
+      <section class="compact-section">
         <h2>Certifications</h2>
         <p>
           <strong>HCIA Huawei Certified ICT Associate</strong><br />
@@ -234,17 +233,46 @@
         </p>
       </section>
 
-      <section>
+      <section class="compact-section">
         <h2>Languages</h2>
         <ul class="skills-list">
           <li>Arabic (Native)</li>
           <li>English (Fluent)</li>
         </ul>
       </section>
+      <section class="compact-section">
+        <h2>References</h2>
+        <p>
+          <a href="https://github.com/AWADREE" target="_blank">GitHub</a><br />
+          <a href="https://awadree.itch.io/" target="_blank">itch.io</a><br />
+          More references available on request.
+        </p>
+      </section>
 
       <blockquote>
         <h1>Thanks for visiting!</h1>
       </blockquote>
+
+      <section id="game-section" class="game-container">
+        <h2>Space Shooter</h2>
+        <p class="game-instructions">
+          Move your mouse to control the ship. Auto-firing enabled!<br />
+          Collect diamond power-ups. Avoid asteroids!
+        </p>
+        <div id="game-canvas-container"></div>
+        <div id="game-ui">
+          <div id="game-score">Score: 0</div>
+          <div id="game-high-score">High Score: 0</div>
+        </div>
+      </section>
+
+      <audio id="background-music" loop preload="auto" autoplay>
+        <source src="music.mp3" type="audio/mp3" />
+      </audio>
+
+      <button id="audio-control" aria-label="Toggle music">
+        <i class="fas fa-volume-up"></i>
+      </button>
     </main>
 
     <div id="copy-message">Copied to clipboard!</div>

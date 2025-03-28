@@ -1,32 +1,27 @@
-import "./style.css";
-import * as THREE from "three";
 import { gsap } from "gsap";
-// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import * as THREE from "three";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { GlitchPass } from "three/addons/postprocessing/GlitchPass.js";
-import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
-import { DotScreenShader } from "three/addons/shaders/DotScreenShader.js";
-import { SobelOperatorShader } from "three/addons/shaders/SobelOperatorShader.js";
-import { LuminosityShader } from "three/addons/shaders/LuminosityShader.js";
 import { ColorifyShader } from "three/addons/shaders/ColorifyShader.js";
+import { DotScreenShader } from "three/addons/shaders/DotScreenShader.js";
+import { LuminosityShader } from "three/addons/shaders/LuminosityShader.js";
+import { SobelOperatorShader } from "three/addons/shaders/SobelOperatorShader.js";
+import { SpaceGame } from "./spaceGame.js";
+import "./style.css";
 
-//init
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
   45,
   window.innerWidth / window.innerHeight,
   0.1,
   20000
-); //(field of view, aspect ratio, view frustum) view frustrum is min view distance and max view distance
-
+);
 const renderer = new THREE.WebGLRenderer();
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-const t = document.body.getBoundingClientRect().top; //getting the scroll position distance from the top of the page
+const t = document.body.getBoundingClientRect().top;
 camera.position.set(t * 0.0002, t * 0.0002, t * 0.01);
 camera.rotation.set(
   3.141578583494836,
@@ -34,9 +29,7 @@ camera.rotation.set(
   3.1415926533918257
 );
 document.body.appendChild(renderer.domElement);
-//-----------------------------------------------
 
-//post processing
 const composer = new EffectComposer(renderer);
 const renderPass = new RenderPass(scene, camera);
 composer.addPass(renderPass);
@@ -65,21 +58,7 @@ composer.addPass(sobelEffect);
 composer.addPass(luminosityEffect);
 composer.addPass(colorifyEffect);
 composer.addPass(bloomPass);
-// composer.addPass(dotEffect);
 
-// const glitchPass = new GlitchPass();
-// composer.addPass(glitchPass);
-
-// const outputPass = new OutputPass();
-// composer.addPass(outputPass);
-//-----------------------------------------------
-
-//scene background/skybox
-// const spaceTexure = new THREE.TextureLoader().load('space.jpg');
-// scene.background = spaceTexure;
-//-----------------------------------------------
-
-//objs torus
 const geometry = new THREE.TorusGeometry(10, 0.3, 16, 100);
 const material = new THREE.MeshStandardMaterial({
   color: 0xffffff,
@@ -96,21 +75,7 @@ const torus3 = new THREE.Mesh(t2geometry, material);
 torus.add(torus3);
 torus3.position.x = -10;
 scene.add(torus);
-//----------------------------------------------
 
-//texturemapping
-// const customTexture = new THREE.TextureLoader().load('normal.jpg')
-// const customMesh = new THREE.Mesh(
-//   new THREE.BoxGeometry(3,3,3),
-//   new THREE.MeshBasicMaterial({
-//     map:customTexture
-//   })
-// )
-// customMesh.position.set(20, 20, 20)
-// scene.add(customMesh);
-//-----------------------------------------------
-
-//moon
 const moonTexture = new THREE.TextureLoader().load("moon.jpg");
 const moonNormalTexture = new THREE.TextureLoader().load("normal.jpg");
 
@@ -123,9 +88,7 @@ const moonMesh = new THREE.Mesh(
 );
 moonMesh.position.set(-10, 0, -5);
 scene.add(moonMesh);
-//-----------------------------------------------
 
-//moon 2
 const moon2Mesh = new THREE.Mesh(
   new THREE.SphereGeometry(3, 32, 32),
   new THREE.MeshStandardMaterial({
@@ -136,9 +99,6 @@ const moon2Mesh = new THREE.Mesh(
 moon2Mesh.position.set(15, 0, -70);
 scene.add(moon2Mesh);
 
-//-----------------------------------------------
-
-//moon 2
 const moon3Mesh = new THREE.Mesh(
   new THREE.SphereGeometry(2, 32, 32),
   new THREE.MeshStandardMaterial({
@@ -149,9 +109,6 @@ const moon3Mesh = new THREE.Mesh(
 moon3Mesh.position.set(0, -3, -135);
 scene.add(moon3Mesh);
 
-//-----------------------------------------------
-
-//orb
 const orbMaterial = new THREE.MeshStandardMaterial({
   color: 0xffffff,
   emissive: 0xffffff,
@@ -171,24 +128,21 @@ scene.add(orbOrbit);
 
 let orbIsOrbiting = false;
 
-// Add glow effect to the orb
 const glowMaterial = new THREE.SpriteMaterial({
-  map: new THREE.TextureLoader().load("glow.png"), // Add a glow texture
+  map: new THREE.TextureLoader().load("glow.png"),
   color: 0xffffff,
   transparent: true,
   opacity: 0.5,
 });
 const glowSprite = new THREE.Sprite(glowMaterial);
-glowSprite.scale.set(5, 5, 1); // Adjust size of the glow
+glowSprite.scale.set(5, 5, 1);
 orbMesh.add(glowSprite);
 
-// Add pulsating effect to the orb
 function animateOrbPulse() {
-  const scale = 1 + Math.sin(Date.now() * 0.005) * 0.1; // Pulsate between 1 and 1.1
+  const scale = 1 + Math.sin(Date.now() * 0.005) * 0.1;
   orbMesh.scale.set(scale, scale, scale);
 }
 
-// Add particle explosion on click
 function createParticleExplosion(position) {
   const explosionGeometry = new THREE.BufferGeometry();
   const explosionCount = 100;
@@ -215,7 +169,6 @@ function createParticleExplosion(position) {
   const explosion = new THREE.Points(explosionGeometry, explosionMaterial);
   scene.add(explosion);
 
-  // Fade out and remove explosion
   gsap.to(explosionMaterial, {
     opacity: 0,
     duration: 1,
@@ -223,7 +176,6 @@ function createParticleExplosion(position) {
   });
 }
 
-// Add click event listener for particle explosion
 window.addEventListener("click", (event) => {
   const mouse = new THREE.Vector2(
     (event.clientX / window.innerWidth) * 2 - 1,
@@ -238,9 +190,6 @@ window.addEventListener("click", (event) => {
     createParticleExplosion(intersects[0].point);
   }
 });
-//-----------------------------------------------
-
-// Add this code near your other event listeners
 
 document.querySelectorAll("section").forEach((section) => {
   section.addEventListener("mousemove", (e) => {
@@ -253,7 +202,6 @@ document.querySelectorAll("section").forEach((section) => {
   });
 });
 
-// Add event listeners for header and blockquote elements
 document.querySelectorAll("header, blockquote").forEach((element) => {
   element.addEventListener("mousemove", (e) => {
     const rect = element.getBoundingClientRect();
@@ -265,7 +213,6 @@ document.querySelectorAll("header, blockquote").forEach((element) => {
   });
 });
 
-// Add this near your other scroll-related code
 function setupMobileFloatAnimation() {
   if (window.innerWidth > 768) return;
 
@@ -287,15 +234,12 @@ function setupMobileFloatAnimation() {
   });
 }
 
-// Add this to your existing window event listeners
 window.addEventListener("load", setupMobileFloatAnimation);
 window.addEventListener("resize", setupMobileFloatAnimation);
 
-//particle system
-// ShaderMaterial for particles
 const particleMaterial = new THREE.ShaderMaterial({
   uniforms: {
-    color: { value: new THREE.Color(0xffffff) }, // Base color
+    color: { value: new THREE.Color(0xffffff) },
   },
   vertexShader: `
     attribute float alpha;
@@ -319,78 +263,59 @@ const particleMaterial = new THREE.ShaderMaterial({
   depthWrite: false,
 });
 
-// Creating an empty geometry for the particles
 const particleGeometry = new THREE.BufferGeometry();
 const particleCount = 70000;
-const positions = new Float32Array(particleCount * 3); // 3 values per particle (x, y, z)
-const alphas = new Float32Array(particleCount); // Storing opacity for each particle
+const positions = new Float32Array(particleCount * 3);
+const alphas = new Float32Array(particleCount);
 particleGeometry.setAttribute(
   "position",
   new THREE.BufferAttribute(positions, 3)
 );
-particleGeometry.setAttribute("alpha", new THREE.BufferAttribute(alphas, 1)); // Opacity attribute
+particleGeometry.setAttribute("alpha", new THREE.BufferAttribute(alphas, 1));
 
-// Creating particle system
 const particles = new THREE.Points(particleGeometry, particleMaterial);
 scene.add(particles);
 
-// Number of emission points (multiple lines)
 const emissionCount = 120;
 
 function animateParticles() {
-  // Shifting existing particles down the array to create the trail effect
   for (let i = particleCount - 1; i >= emissionCount; i--) {
     positions[i * 3] = positions[(i - emissionCount) * 3];
     positions[i * 3 + 1] = positions[(i - emissionCount) * 3 + 1];
     positions[i * 3 + 2] = positions[(i - emissionCount) * 3 + 2];
 
-    alphas[i] = alphas[i - emissionCount]; // Carry forward alpha (opacity)
+    alphas[i] = alphas[i - emissionCount];
   }
 
   const orbWorldPos = new THREE.Vector3();
   orbMesh.getWorldPosition(orbWorldPos);
 
-  // Emitting multiple particles at slightly offset positions around the orbMesh
   for (let j = 0; j < emissionCount; j++) {
-    // Offsetting the emission points around the object to create multiple trails
-    const angle = ((Math.PI * 2) / emissionCount) * j; // Spreading particles in a circle
-    // const offsetX = Math.cos(angle) * 0.2;
-    // const offsetY = Math.sin(angle) * 0.2;
+    const angle = ((Math.PI * 2) / emissionCount) * j;
     const offsetX = Math.random() * 0.4 - 0.15;
     const offsetY = Math.random() * 0.4 - 0.15;
     const offsetZ = Math.random() * 0.4 - 0.15;
 
-    // Setting the new position for each emitted particle
     positions[j * 3] = orbWorldPos.x + offsetX;
     positions[j * 3 + 1] = orbWorldPos.y + offsetY;
     positions[j * 3 + 2] = orbWorldPos.z + offsetZ;
 
-    alphas[j] = 1.0; // New particles start with full opacity
+    alphas[j] = 1.0;
   }
 
-  // Gradually reducing opacity based on their lifetime
   for (let i = 0; i < particleCount; i++) {
-    alphas[i] *= 0.98; // Reduceing opacity over time for each particle
+    alphas[i] *= 0.98;
   }
 
-  // Updating geometry attributes
   particleGeometry.attributes.position.needsUpdate = true;
   particleGeometry.attributes.alpha.needsUpdate = true;
 }
-//-----------------------------------------------
 
-//light
 const pointLight = new THREE.PointLight(0xffffff, 20, 1000, 0.3);
 pointLight.position.set(0, 0, 10);
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
 scene.add(pointLight, ambientLight);
-//----------------------------------------------
-
-//controlls
-// const controls = new OrbitControls(camera, renderer.domElement);
-// controls.enabled = false;
-//----------------------------------------------
 
 function addStar(spreadDistance) {
   const geometry = new THREE.SphereGeometry(0.25, 24, 24);
@@ -468,8 +393,6 @@ const moveOrb = (t) => {
     }
   }
 };
-//-8096
-//8
 
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
@@ -484,11 +407,10 @@ function moveCamera() {
   torus.position.setZ(t * 0.01 * -1);
   pointLight.position.setZ(t * 0.01 * -1);
 
-  // Adjust camera movement for mobile
   if (isMobile) {
     camera.position.x = t * 0.0001;
     camera.position.y = t * 0.0001;
-    camera.position.z = Math.max(t * 0.01, -200); // Limit how far back the camera can go
+    camera.position.z = Math.max(t * 0.01, -200);
   } else {
     camera.position.x = t * 0.0002 * 2;
     camera.position.y = t * 0.0002 * 2;
@@ -500,7 +422,6 @@ function moveCamera() {
   moveOrb(t);
 }
 
-// Add resize handler to update camera on orientation change
 window.addEventListener("resize", () => {
   const aspect = window.innerWidth / window.innerHeight;
   camera.aspect = aspect;
@@ -511,7 +432,6 @@ window.addEventListener("resize", () => {
 
 document.body.onscroll = moveCamera;
 
-// Update scroll indicator on scroll
 function updateScrollIndicator() {
   const scrollTop = document.documentElement.scrollTop;
   const scrollHeight =
@@ -525,13 +445,105 @@ function updateScrollIndicator() {
 
 window.addEventListener("scroll", updateScrollIndicator);
 
-//update method
+function copyToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => showCopyMessage(text))
+      .catch((err) => console.error("Failed to copy:", err));
+  } else {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.opacity = 0;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand("copy");
+      showCopyMessage(text);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+    document.body.removeChild(textArea);
+  }
+}
+
+function showCopyMessage(text) {
+  const message = document.getElementById("copy-message");
+  if (message) {
+    message.textContent = `Copied: ${text}`;
+    message.classList.add("visible");
+    setTimeout(() => {
+      message.classList.remove("visible");
+    }, 2000);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".copyable").forEach((element) => {
+    element.addEventListener("click", (e) => {
+      e.preventDefault();
+      const textToCopy = e.target.dataset.copy || e.target.textContent.trim();
+      copyToClipboard(textToCopy);
+    });
+  });
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const music = document.getElementById("background-music");
+  const audioControl = document.getElementById("audio-control");
+  const audioIcon = audioControl.querySelector("i");
+
+  music.volume = 0.2;
+  music.muted = false;
+  music.loop = true;
+  let isPlaying = false;
+
+  const attemptPlay = async () => {
+    try {
+      await music.play();
+      isPlaying = true;
+      audioIcon.className = "fas fa-volume-up";
+      audioControl.classList.remove("muted");
+    } catch (err) {
+      console.log("Playback attempt failed:", err);
+    }
+  };
+
+  music.addEventListener("loadedmetadata", attemptPlay);
+
+  attemptPlay();
+
+  setTimeout(attemptPlay, 1000);
+
+  const startAudio = () => {
+    if (!isPlaying) {
+      attemptPlay();
+    }
+    document.removeEventListener("click", startAudio);
+  };
+  document.addEventListener("click", startAudio);
+
+  audioControl.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (music.muted) {
+      music.muted = false;
+      audioIcon.className = "fas fa-volume-up";
+      audioControl.classList.remove("muted");
+      if (!isPlaying) attemptPlay();
+    } else {
+      music.muted = true;
+      audioIcon.className = "fas fa-volume-mute";
+      audioControl.classList.add("muted");
+    }
+    audioControl.classList.add("clicked");
+    setTimeout(() => audioControl.classList.remove("clicked"), 200);
+  });
+});
+
 function animate() {
   requestAnimationFrame(animate);
-  //
-  //------------------------------
-  // torus.rotation.x += 0.01;
-  // torus.rotation.y += 0.01;
   torus.rotation.z += 0.01;
 
   moonMesh.rotation.x += 0.005;
@@ -547,11 +559,8 @@ function animate() {
   if (orbIsOrbiting) {
     orbOrbit.rotation.x += 0.005;
   }
-  // orbOrbit.rotation.z += 0.005;
-  animateOrbPulse(); // Add pulsating effect
+  animateOrbPulse();
   animateParticles();
-  // controls.update();
-  //------------------------------
   renderer.render(scene, camera);
   composer.render();
 }
@@ -561,44 +570,13 @@ animate();
 //helpers (gizmos)
 const lightHelper = new THREE.PointLightHelper(pointLight);
 const gridHelper = new THREE.GridHelper(200, 50);
-// scene.add(lightHelper, gridHelper);
-//----------------------------------------------
 
-// Function to copy text to clipboard
-function copyToClipboard(text) {
-  navigator.clipboard
-    .writeText(text)
-    .then(() => {
-      const message = document.getElementById("copy-message");
-      if (message) {
-        message.textContent = `Copied: ${text}`; // Display the copied text
-        message.classList.add("visible");
-        setTimeout(() => {
-          message.classList.remove("visible");
-        }, 2000);
-      } else {
-        console.error("Copy message element not found.");
-      }
-    })
-    .catch((err) => {
-      console.error("Failed to copy text: ", err);
-    });
-}
-
-// Debugging: Log clicks to ensure the function is triggered
-document.querySelectorAll(".copyable").forEach((element) => {
-  element.addEventListener("click", (e) => {
-    console.log(`Clicked: ${e.target.textContent}`);
-  });
-});
-
-// Function to apply typing effect to header
 function applyTypingEffectToHeader(selector) {
   const header = document.querySelector(selector);
   if (!header) return;
 
   const text = header.textContent;
-  header.textContent = ""; // Clear the text
+  header.textContent = "";
   let index = 0;
 
   const interval = setInterval(() => {
@@ -608,38 +586,16 @@ function applyTypingEffectToHeader(selector) {
     } else {
       clearInterval(interval);
     }
-  }, 50); // Adjust typing speed here
+  }, 50);
 }
 
-// Apply the typing effect to the header
 document.addEventListener("DOMContentLoaded", () => {
   applyTypingEffectToHeader("header h3");
 });
 
-//--------------------------------------------------------
-// // Set starting and target positions
-// const startPosition = new THREE.Vector3(0, 0, 0);
-// const targetPosition = new THREE.Vector3(5, 2, -3);
-
-// // Time tracking variables
-// let elapsedTime = 0;
-// const duration = 2; // duration in seconds
-
-// // In your render/animation loop:
-// function animate(deltaTime) {
-//   // Update elapsed time
-//   elapsedTime += deltaTime;
-
-//   // Calculate interpolation factor (0 to 1)
-//   const t = Math.min(elapsedTime / duration, 1); // Ensures t doesn't go over 1
-
-//   // Interpolate position using lerp
-//   object.position.lerpVectors(startPosition, targetPosition, t);
-
-//   // Render the scene
-//   renderer.render(scene, camera);
-
-//   // Repeat animation loop
-//   requestAnimationFrame(animate);
-// }
-//--------------------------------------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  const gameContainer = document.getElementById("game-canvas-container");
+  if (gameContainer) {
+    new SpaceGame(gameContainer);
+  }
+});
