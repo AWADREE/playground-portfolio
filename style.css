@@ -27,6 +27,7 @@
   --mouse-y: 0px;
   --glow-size: 150px;
   --glow-color: #ff993333;
+  --neon-glow: 0 0 10px #ff9933, 0 0 20px #ff9933;
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Lato:wght@400;700&display=swap");
@@ -123,6 +124,49 @@ header {
   min-height: 300px;
 }
 
+header .title {
+  color: #ff9933 !important;
+  font-size: 1.2rem !important;
+  margin-bottom: 1rem !important;
+  font-weight: 600;
+  text-shadow: var(--neon-glow);
+  letter-spacing: 2px;
+  animation: titlePulse 2s ease-in-out infinite;
+}
+
+header .location {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  animation: locationGlow 3s ease-in-out infinite;
+  text-shadow: 0 0 5px rgba(255, 153, 51, 0.5);
+}
+
+@keyframes titlePulse {
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow: var(--neon-glow);
+  }
+  50% {
+    opacity: 0.8;
+    text-shadow: 0 0 15px #ff9933, 0 0 30px #ff9933;
+  }
+}
+
+@keyframes locationGlow {
+  0%,
+  100% {
+    opacity: 0.8;
+    text-shadow: 0 0 5px rgba(255, 153, 51, 0.5);
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(255, 153, 51, 0.8);
+  }
+}
+
 .profile-image {
   flex-shrink: 0;
   width: 200px;
@@ -132,6 +176,7 @@ header {
   border: 3px solid var(--highlight-color);
   box-shadow: 0 0 20px rgba(255, 153, 51, 0.3);
   transition: transform 0.3s ease;
+  position: relative;
 }
 
 .profile-image:hover {
@@ -143,6 +188,60 @@ header {
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+.profile-image::before {
+  content: "";
+  position: absolute;
+  inset: -30px;
+  border: 2px solid var(--link-hover-color);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: rotate 10s linear infinite;
+}
+
+.profile-image::after {
+  content: "";
+  position: absolute;
+  inset: -30px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.profile-image .small-rings {
+  position: absolute;
+  inset: -30px;
+  animation: rotate 10s linear infinite;
+}
+
+.profile-image .small-rings::before,
+.profile-image .small-rings::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--link-hover-color);
+  border-radius: 50%;
+  opacity: 0.3;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.profile-image .small-rings::before {
+  left: -15px;
+}
+
+.profile-image .small-rings::after {
+  right: -15px;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 header:hover {
@@ -175,7 +274,8 @@ header h3 {
   color: var(--highlight-color);
   height: auto;
   min-height: 2.5rem;
-  overflow: visible;
+  white-space: nowrap;
+  display: inline-block;
 }
 
 .title {
@@ -224,7 +324,39 @@ header p {
   position: relative;
   overflow: hidden;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  text-shadow: var(--neon-glow);
+  animation: buttonPulse 2s ease-in-out infinite;
+}
+
+@keyframes buttonPulse {
+  0%,
+  100% {
+    text-shadow: var(--neon-glow);
+    border-color: var(--link-hover-color);
+  }
+  50% {
+    text-shadow: 0 0 15px #ff9933, 0 0 30px #ff9933;
+    border-color: #ff9933;
+  }
+}
+
+.download-resume-btn i {
+  font-size: 1.4rem;
+  transition: transform 0.3s ease;
+  animation: downloadIcon 2s ease-in-out infinite;
+}
+
+@keyframes downloadIcon {
+  0%,
+  100% {
+    transform: translateY(0);
+    text-shadow: var(--neon-glow);
+  }
+  50% {
+    transform: translateY(2px);
+    text-shadow: 0 0 15px #ff9933, 0 0 30px #ff9933;
+  }
 }
 
 .download-resume-btn::before {
@@ -253,15 +385,6 @@ header p {
 
 .download-resume-btn:active {
   transform: translateY(-1px);
-}
-
-.download-resume-btn i {
-  font-size: 1.4rem;
-  transition: transform 0.3s ease;
-}
-
-.download-resume-btn:hover i {
-  transform: translateX(5px);
 }
 
 section {
