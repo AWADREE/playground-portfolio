@@ -76,8 +76,8 @@ torus.add(torus3);
 torus3.position.x = -10;
 scene.add(torus);
 
-const moonTexture = new THREE.TextureLoader().load("./moon.jpg");
-const moonNormalTexture = new THREE.TextureLoader().load("./normal.jpg");
+const moonTexture = new THREE.TextureLoader().load("/moon.jpg");
+const moonNormalTexture = new THREE.TextureLoader().load("/normal.jpg");
 
 const moonMesh = new THREE.Mesh(
   new THREE.SphereGeometry(3, 32, 32),
