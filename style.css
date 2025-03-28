@@ -322,6 +322,11 @@ section h2 {
   text-transform: capitalize;
 }
 
+section h2 i {
+  margin-right: 0.5rem;
+  color: var(--link-hover-color);
+}
+
 section p {
   margin-bottom: 1rem;
   font-size: 1rem;
@@ -527,6 +532,117 @@ copyable:active {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+.experience-section {
+  background: linear-gradient(
+    145deg,
+    var(--section-bg),
+    rgba(255, 153, 51, 0.05)
+  );
+}
+
+.experience-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--border-radius);
+  transition: all 0.3s ease;
+}
+
+.experience-item:hover {
+  transform: translateX(10px);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.company-icon {
+  font-size: 1.5rem;
+  color: var(--link-hover-color);
+  background: rgba(255, 153, 51, 0.1);
+  padding: 1rem;
+  border-radius: 50%;
+  min-width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.experience-content {
+  flex: 1;
+}
+
+.role {
+  color: var(--link-hover-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.education-section {
+  background: linear-gradient(
+    145deg,
+    var(--section-bg),
+    rgba(100, 200, 255, 0.05)
+  );
+}
+
+.skills-section {
+  background: linear-gradient(
+    145deg,
+    var(--section-bg),
+    rgba(150, 255, 150, 0.05)
+  );
+}
+
+.projects-section {
+  background: linear-gradient(
+    145deg,
+    var(--section-bg),
+    rgba(255, 100, 255, 0.05)
+  );
+}
+
+.web-projects-section {
+  background: linear-gradient(
+    145deg,
+    var(--section-bg),
+    rgba(100, 100, 255, 0.05)
+  );
+}
+
+.certifications-section {
+  background: linear-gradient(
+    145deg,
+    var(--section-bg),
+    rgba(255, 215, 0, 0.05)
+  );
+}
+
+.languages-section {
+  background: linear-gradient(
+    145deg,
+    var(--section-bg),
+    rgba(255, 100, 100, 0.05)
+  );
+}
+
+.references-section {
+  background: linear-gradient(
+    145deg,
+    var(--section-bg),
+    rgba(100, 255, 200, 0.05)
+  );
+}
+
+.game-container {
+  background: linear-gradient(
+    145deg,
+    var(--section-bg),
+    rgba(255, 0, 255, 0.05)
+  );
+}
+
 #scroll-indicator {
   position: fixed;
   top: 0;
@@ -592,6 +708,51 @@ copyable:active {
   color: var(--highlight-color);
   font-family: "Quicksand", sans-serif;
   font-size: 1.2rem;
+}
+
+.contact-links {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.icon-link {
+  color: var(--text-color);
+  text-decoration: none !important;
+  font-size: 1.4rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  will-change: transform;
+}
+
+.icon-link:hover {
+  color: var(--link-hover-color);
+  transform: translateY(-3px);
+  background: rgba(255, 153, 51, 0.1);
+  box-shadow: 0 4px 12px rgba(255, 153, 51, 0.2);
+}
+
+.copyable.icon-link {
+  text-decoration: none !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.copyable.icon-link:hover {
+  text-decoration: none !important;
+  transform: translateY(-3px);
+}
+
+.copyable.icon-link:active {
+  transform: translateY(0) scale(0.95);
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media screen and (max-width: 768px) {
@@ -711,6 +872,27 @@ copyable:active {
 
   #game-canvas-container {
     height: 300px;
+  }
+
+  .experience-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .company-icon {
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-links {
+    justify-content: center;
+  }
+
+  .icon-link {
+    font-size: 1.2rem;
+    width: 35px;
+    height: 35px;
   }
 }
 

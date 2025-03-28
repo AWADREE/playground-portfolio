@@ -472,7 +472,8 @@ function copyToClipboard(text) {
 function showCopyMessage(text) {
   const message = document.getElementById("copy-message");
   if (message) {
-    message.textContent = `Copied: ${text}`;
+    const type = text.includes("@") ? "elawadree@gmail.com" : "+201206799666";
+    message.textContent = `Copied: ${type}`;
     message.classList.add("visible");
     setTimeout(() => {
       message.classList.remove("visible");
@@ -484,8 +485,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".copyable").forEach((element) => {
     element.addEventListener("click", (e) => {
       e.preventDefault();
-      const textToCopy = e.target.dataset.copy || e.target.textContent.trim();
-      copyToClipboard(textToCopy);
+      const textToCopy = e.currentTarget.getAttribute("data-copy");
+      if (textToCopy) {
+        copyToClipboard(textToCopy);
+      }
     });
   });
 });
