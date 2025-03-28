@@ -12,7 +12,7 @@ const POWERUP_TYPES = {
     emissive: 0x444400,
     scale: 0.5,
     effect: (game) => {
-      game.shotCooldown = Math.max(50, game.shotCooldown - 20);
+      game.shotCooldown = Math.max(100, game.shotCooldown - 20);
       game.score += 50;
     },
   },
@@ -185,8 +185,8 @@ export class SpaceGame {
     const bullet = new THREE.Mesh(
       new THREE.ConeGeometry(0.15, 0.6, 8),
       new THREE.MeshPhongMaterial({
-        color: 0x00ff00,
-        emissive: 0x00ff00,
+        color: 0xff9933,
+        emissive: 0xff9933,
         emissiveIntensity: 1.5,
         transparent: false,
         shininess: 0,
@@ -196,7 +196,7 @@ export class SpaceGame {
 
     const glowMaterial = new THREE.SpriteMaterial({
       map: new THREE.TextureLoader().load("glow.png"),
-      color: 0x00ff00,
+      color: 0xff9933,
       transparent: true,
       blending: THREE.AdditiveBlending,
     });
@@ -235,9 +235,9 @@ export class SpaceGame {
 
     const bodyGeometry = new THREE.ConeGeometry(0.3, 2, 6);
     const bodyMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      emissive: 0xffffff,
-      emissiveIntensity: 0.5,
+      color: 0xff9933, // Changed from white to orange
+      emissive: 0xff9933, // Changed emissive to match
+      emissiveIntensity: 0.8,
       metalness: 0.3,
       roughness: 0.7,
       flatShading: true,
@@ -247,8 +247,9 @@ export class SpaceGame {
 
     const wingGeometry = new THREE.BoxGeometry(1.8, 0.1, 0.7);
     const wingMaterial = new THREE.MeshPhongMaterial({
-      color: 0xffffff,
-      emissive: 0xcccccc,
+      color: 0xff9933, // Changed from white to orange
+      emissive: 0xff9933, // Changed from cccccc to match
+      emissiveIntensity: 0.5,
       shininess: 0,
       flatShading: true,
     });
@@ -267,9 +268,9 @@ export class SpaceGame {
 
     const engineGeometry = new THREE.CylinderGeometry(0.15, 0.2, 0.3, 6);
     const engineMaterial = new THREE.MeshPhongMaterial({
-      color: 0x4444ff,
-      emissive: 0x0000ff,
-      emissiveIntensity: 0.5,
+      color: 0xff9933,
+      emissive: 0xff9933,
+      emissiveIntensity: 1,
     });
     const engine = new THREE.Mesh(engineGeometry, engineMaterial);
     engine.position.y = -1;
@@ -289,7 +290,7 @@ export class SpaceGame {
 
   setupTrailEffect() {
     const trailGeometry = new THREE.BufferGeometry();
-    const particleCount = window.innerWidth > 768 ? 30 : 15;
+    const particleCount = window.innerWidth > 768 ? 15 : 8;
     const trailPositions = new Float32Array(particleCount * 3);
     const trailColors = new Float32Array(particleCount * 3);
 
